@@ -159,25 +159,25 @@ public abstract class Car {
     @Override
     public String toString() {
         return String.format("""
-        ----------------------------
-        Car Details
-        ----------------------------
-        Brand              : %s
-        Model              : %s
-        Registration No.   : %s
-        Odometer           : %d km
-        Engine Size        : %d L
-        Seats              : %d
-        Horsepower         : %d HP
-        Automatic Gear     : %s
-        Air Condition      : %s
-        Cruise Control     : %s
-        Leather Seats      : %s
-        Registration Date  : %s
-        Fuel Type          : %s
-        Car Status         : %s
-        ----------------------------
-        """,
+    ============================================
+                   CAR DETAILS
+    ============================================
+    Brand              : %s
+    Model              : %s
+    Registration No.   : %s
+    Odometer           : %,d km
+    Engine Size        : %.1f L
+    Seats              : %d
+    Horsepower         : %d HP
+    Automatic Gear     : %s
+    Air Condition      : %s
+    Cruise Control     : %s
+    Leather Seats      : %s
+    Registration Date  : %s
+    Fuel Type          : %s
+    Car Status         : %s
+    ============================================
+    """,
                 brand,
                 model,
                 regNo,

@@ -102,8 +102,8 @@ public class Menu {
         System.out.println("Rental Menu");
         System.out.println("1. Create rental");
         System.out.println("2. See All rentals");
-        System.out.println("5. Update rental");
-        System.out.println("6. Delete rental");
+        System.out.println("3. Update rental");
+        System.out.println("4. Delete rental");
         System.out.println("0. Main Menu");
         int choice = Byte.parseByte(scanner.nextLine());
         switch (choice) {
@@ -135,7 +135,7 @@ public class Menu {
         System.out.println("3. Update Customer Information");
         System.out.println("4. Delete Customer");
         System.out.println("0. Main Menu");
-        byte choice = Byte.parseByte(scanner.nextLine());
+        int choice = Byte.parseByte(scanner.nextLine());
 
         switch (choice) {
             case 1 -> {
@@ -195,7 +195,7 @@ public class Menu {
                 "       | |__) |   | |_ \\_| |   \\ | | |_/ | | \\_| / _ \\     | |     \n" +
                 "       |  __ /    |  _| _  | |\\ \\| |     | |    / ___ \\    | |   _ \n" +
                 "      _| |  \\ \\_ _| |__/ |_| |_\\   |_   _| |_ _/ /   \\ \\_ _| |__/ |\n" +
-                "     |____| |___|________|_____|\\____| |_____|____| |____|________|";
+                "     |____| |___|________|_____|\\____| |_____|____| |____|________|\n";
         return ascii;
     }
 

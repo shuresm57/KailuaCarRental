@@ -76,21 +76,29 @@ public class Customer {
     @Override
     public String toString() {
         return String.format("""
-    ----------------------------
-    Customer
-    ----------------------------
+    ============================================
+                   CUSTOMER DETAILS
+    ============================================
     Name               : %s
     Phone Number       : %s
     Email              : %s
     License No.        : %s
     Driver Since       : %s
-    %s
+    ============================================
+                   ADDRESS DETAILS
+    ============================================
+    Address           : %s
+    Zip Code          : %s
+    City             : %s
+    ============================================
     """,
                 name,
                 phoneNo,
                 email,
                 licenseNo,
                 driverSince,
-                address);
+                address.getAddress(),
+                address.getZip(),
+                address.getCity());
     }
 }

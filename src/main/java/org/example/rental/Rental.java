@@ -39,10 +39,6 @@ public class Rental {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
     public Car getCar() {
         return car;
     }
@@ -87,23 +83,19 @@ public class Rental {
         return rentalStatus;
     }
 
-    public void setRentalStatus(RentalStatus rentalStatus) {
-        this.rentalStatus = rentalStatus;
-    }
-
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("""
-        ----------------------------
-        Rental Details
-        ----------------------------
-        Customer        : %s
-        Car             : %s
-        Rental date     : %s
-        End date        : %s
-        Rental status   : %s
-        ----------------------------
-        """, customer, car, startDate,endDate, rentalStatus);
+    ============================================
+                   RENTAL DETAILS
+    ============================================
+    Customer      : %s
+    Car           : %s
+    Rental Date   : %s
+    End Date      : %s
+    Rental Status : %s
+    ============================================
+    """, customer, car, startDate, endDate, rentalStatus);
     }
 
 }
