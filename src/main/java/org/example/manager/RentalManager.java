@@ -2,13 +2,14 @@ package org.example.manager;
 
 import org.example.car.Car;
 import org.example.customer.Customer;
-import org.example.dao.RentalDAO;
+import org.example.db.RentalDAO;
 import org.example.rental.Rental;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static org.example.car.CarStatus.RENTED;
 
 
 public class RentalManager {
@@ -18,21 +19,21 @@ public class RentalManager {
     private CustomerManager customerManager = new CustomerManager();
     private CarManager carManager = new CarManager();
 
-    public void getRentalsFromSQL(ArrayList<Rental> rentalList, ArrayList<Customer> customerList,ArrayList<Car> carList){
-        rentalDAO.getRentals(rentalList,carList,customerList);
+    public void getRentalsFromSQL(List<Rental> rentalList, Map<String,Customer> customerMap,Map<String,Car> carMap){
+        rentalDAO.loadRentals(rentalList,customerMap,carMap);
     }
 
-    public void printRentals(ArrayList<Rental> rentalList){
+    public void printRentals(List<Rental> rentalList){
         rentalList.forEach(System.out::print);
     }
 
-    public void deleteRental(ArrayList<Rental> rentalList){
+    public void deleteRental(List<Rental> rentalList){
         Rental deleteRental = findRental(rentalList);
         rentalDAO.deleteRental(deleteRental);
         rentalList.remove(deleteRental);
     }
 
-    public Rental findRental(ArrayList<Rental> rentalList){
+    public Rental findRental(List<Rental> rentalList){
         System.out.println("Type the name of the customer: ");
         String name = scanner.nextLine();
         for(Rental rental : rentalList){
@@ -44,13 +45,12 @@ public class RentalManager {
         return null;
     }
 
-    public Customer checkCustomerExist(ArrayList<Customer> customerList) {
-        Customer customer = customerManager.findCustomer(customerList);
+    public Customer checkCustomerExist(Map<String,Customer> customerMap) {
+        Customer customer = customerManager.findCustomer(customerMap);
 
         if (customer == null) {
             System.out.println("Customer not found. Creating a new customer...");
-            customerManager.createCustomer(customerList);
-            return customerList.get(customerList.size() - 1); // Return the newly added customer
+            return customerManager.createCustomer(customerMap);
         } else {
             System.out.println("Customer found: " + customer.getName() +
                     "\nWould you like to use this customer or create new?" +
@@ -65,8 +65,7 @@ public class RentalManager {
                     return customer;
                 }
                 case 2 -> {
-                    customerManager.createCustomer(customerList);
-                    return customerList.get(customerList.size() - 1);
+                    return customerManager.createCustomer(customerMap);
                 }
                 default -> {
                     System.out.println("Invalid choice. Using existing customer.");
@@ -76,11 +75,11 @@ public class RentalManager {
         }
     }
 
-    public void createRental(ArrayList<Rental> rentalList, ArrayList<Customer> customerList, ArrayList<Car> carList){
-        Customer customer = checkCustomerExist(customerList);
+    public void createRental(List<Rental> rentalList, Map<String,Customer> customerMap, Map<String,Car> carMap){
+        Customer customer = checkCustomerExist(customerMap);
 
-        carManager.printAvailableCars(carList);
-        Car car = carManager.findCar(carList);
+        carManager.printAvailableCars(carMap);
+        Car car = carManager.findCar(carMap);
 
         System.out.println("Enter start of rental date (dd-MM-yyyy): ");
         String startDateAsString = scanner.nextLine();
@@ -96,50 +95,50 @@ public class RentalManager {
         int maxKM = Integer.parseInt(scanner.nextLine());
 
         Rental rental = new Rental(customer,car,startDate,endDate,maxKM);
-
+        rental.getCar().setCarStatus(RENTED);
         rentalList.add(rental);
     }
 
-    public void updateRental(ArrayList<Rental> rentalList) {
-        Rental rental = findRental(rentalList); // Find the rental to update
+    public void updateRental(List<Rental> rentalList) {
+        Rental rental = findRental(rentalList);
+        if(rental != null) {
+            System.out.println("Choose what you would like to update: " +
+                    "\n1. Start Date" +
+                    "\n2. End Date" +
+                    "\n3. Max KM" +
+                    "\n4. End Rental");
 
-        System.out.println( "Choose what you would like to update: " +
-                            "\n1. Start Date" +
-                            "\n2. End Date" +
-                            "\n3. Max KM" +
-                            "\n4. End Rental");
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter new start date (YYYY-MM-DD): ");
+                    rental.setStartDate(LocalDate.parse(scanner.nextLine()));
+                    break;
+                case 2:
+                    System.out.print("Enter new end date (YYYY-MM-DD): ");
+                    rental.setEndDate(LocalDate.parse(scanner.nextLine()));
+                    break;
+                case 3:
+                    System.out.print("Enter new max km: ");
+                    rental.setMaxKM(Integer.parseInt(scanner.nextLine()));
+                    break;
+                case 4:
+                    System.out.println("Ending rental and marking as completed.");
+                    System.out.print("Enter the kilometers driven: ");
+                    int kmDriven = Integer.parseInt(scanner.nextLine());
+                    rental.getCar().setOdometer(kmDriven + rental.getCar().getOdometer());
+                    Rental completedRental = new Rental(rental.getCustomer(), rental.getCar(), rental.getStartDate(), rental.getEndDate(), rental.getMaxKM());
+                    completedRental.endRental(completedRental, kmDriven);
 
-        int choice = Integer.parseInt(scanner.nextLine());
-        switch (choice) {
-            case 1:
-                System.out.print("Enter new start date (YYYY-MM-DD): ");
-                rental.setStartDate(LocalDate.parse(scanner.nextLine())); // Set the new start date
-                break;
-            case 2:
-                System.out.print("Enter new end date (YYYY-MM-DD): ");
-                rental.setEndDate(LocalDate.parse(scanner.nextLine())); // Set the new end date
-                break;
-            case 3:
-                System.out.print("Enter new max km: ");
-                rental.setMaxKM(Integer.parseInt(scanner.nextLine())); // Set the new max km
-                break;
-            case 5:
-                System.out.println("Ending rental and marking as completed.");
+                    rentalList.remove(rental);
+                    rentalList.add(completedRental);
 
-                System.out.print("Enter the kilometers driven: ");
-                int kmDriven = Integer.parseInt(scanner.nextLine());
-
-                Rental completedRental = new Rental(rental.getCustomer(), rental.getCar(), rental.getStartDate(), rental.getEndDate(), rental.getMaxKM());
-                completedRental.endRental(completedRental, kmDriven);
-
-                rentalList.remove(rental);
-                rentalList.add(completedRental);
-
-                System.out.println("Rental has been marked as completed with " + kmDriven + " km driven.");
-                break;
-            default:
-                System.out.println("Invalid choice, please select a valid option.");
-                break;
+                    System.out.println("Rental has been marked as completed with " + kmDriven + " km driven.");
+                    break;
+                default:
+                    System.out.println("Invalid choice, please select a valid option.");
+                    break;
+            }
         }
     }
 

@@ -1,10 +1,9 @@
 package org.example.manager;
 
 import org.example.car.*;
+import org.example.util.CarCreationHelper;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LuxuryManager {
@@ -58,7 +57,7 @@ public class LuxuryManager {
                 break;
             case 4:
                 System.out.print("Enter new Odometer reading: ");
-                car.setOdoMeter(Integer.parseInt(scanner.nextLine()));
+                car.setOdometer(Integer.parseInt(scanner.nextLine()));
                 break;
             case 5:
                 System.out.print("Enter new Engine Size: ");

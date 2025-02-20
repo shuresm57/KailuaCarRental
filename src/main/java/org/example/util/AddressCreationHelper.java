@@ -1,14 +1,14 @@
-package org.example.manager;
+package org.example.util;
 
 import org.example.customer.Address;
 
 import java.util.Scanner;
 
-public class AddressManager {
+public class AddressCreationHelper {
 
     private Scanner scanner = new Scanner(System.in);
 
-    public AddressManager(){}
+    public AddressCreationHelper(){}
 
     public Address createAddress(){
         System.out.println("Street name and number: ");

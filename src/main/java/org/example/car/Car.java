@@ -26,6 +26,10 @@ public abstract class Car {
 
     protected CarStatus carStatus;
 
+    /*I dette tilfælde, ville det være ideelt at bruge et bibliotek som Lombok, som indeholder annoteringer
+     * som @Getter og @Setter
+     * Til at reducere boilerplate koden og forbedre læsbarheden*/
+
     public Car(){}
 
     public Car(String brand, String model, String regNo,
@@ -48,9 +52,7 @@ public abstract class Car {
         this.carStatus = carStatus;
     }
 
-    /*I dette tilfælde, ville det være ideelt at bruge et bibliotek som Lombok, som indeholder annoteringer
-    * som @Getter og @Setter
-    * Til at reducere boilerplate koden og forbedre læsbarheden*/
+
 
     public String getRegNo() {
         return regNo;
@@ -80,7 +82,7 @@ public abstract class Car {
         return odoMeter;
     }
 
-    public void setOdoMeter(int odoMeter) {
+    public void setOdometer(int odoMeter) {
         this.odoMeter = odoMeter;
     }
 
@@ -159,25 +161,26 @@ public abstract class Car {
     @Override
     public String toString() {
         return String.format("""
-    ============================================
-                   CAR DETAILS
-    ============================================
-    Brand              : %s
-    Model              : %s
-    Registration No.   : %s
-    Odometer           : %,d km
-    Engine Size        : %.1f L
-    Seats              : %d
-    Horsepower         : %d HP
-    Automatic Gear     : %s
-    Air Condition      : %s
-    Cruise Control     : %s
-    Leather Seats      : %s
-    Registration Date  : %s
-    Fuel Type          : %s
-    Car Status         : %s
-    ============================================
-    """,
+            ============================================
+                       %s %s DETAILS
+            ============================================
+            Brand              : %s
+            Model              : %s
+            Registration No.   : %s
+            Odometer           : %,d km
+            Engine Size        : %d L
+            Seats              : %d
+            Horsepower         : %d HP
+            Automatic Gear     : %s
+            Air Condition      : %s
+            Cruise Control     : %s
+            Leather Seats      : %s
+            Registration Date  : %s
+            Fuel Type          : %s
+            Car Status         : %s
+            ============================================
+            """,
+                brand.toUpperCase(), model.toUpperCase(), // Title with uppercase formatting
                 brand,
                 model,
                 regNo,

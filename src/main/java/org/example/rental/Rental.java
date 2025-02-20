@@ -86,16 +86,28 @@ public class Rental {
     @Override
     public String toString() {
         return String.format("""
-    ============================================
-                   RENTAL DETAILS
-    ============================================
-    Customer      : %s
-    Car           : %s
-    Rental Date   : %s
-    End Date      : %s
-    Rental Status : %s
-    ============================================
-    """, customer, car, startDate, endDate, rentalStatus);
+                ============================================
+                               RENTAL DETAILS
+                ============================================
+                Customer       : %s
+                Car            : %s %s
+                License Plate  : %s
+                Rental Date    : %s
+                End Date       : %s
+                Max KM         : %,d km
+                KM Driven      : %,d km
+                Rental Status  : %s
+                ============================================
+                """,
+                customer.getName(),
+                car.getBrand(),
+                car.getModel(),
+                car.getRegNo(),
+                startDate,
+                endDate != null ? endDate : "Ongoing",
+                maxKM,
+                kmDriven,
+                rentalStatus);
     }
 
 }

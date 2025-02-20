@@ -1,103 +1,98 @@
 package org.example.manager;
 
 import org.example.car.*;
-import org.example.dao.CarDAO;
+import org.example.customer.Customer;
+import org.example.db.CarDAO;
+import org.example.rental.Rental;
+import org.example.util.CarCreationHelper;
 
-import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /*Denne liste fungerer som en mellemand mellem min TUI og forretningen
-* og set fra GRASP princippet om Controller, så opfylder den denne rolle.
-* Den opfylder også Pure Fabrication, da den håndterer logik
-* og reducerer kompleksitet i andre klasser.*/
+ * og set fra GRASP princippet om Controller, så opfylder den denne rolle.
+ * Den opfylder også Pure Fabrication, da den håndterer logik
+ * og reducerer kompleksitet i andre klasser.*/
 
 public class CarManager {
 
-    private Scanner scanner = new Scanner(System.in);
-    private LuxuryManager luxuryManager = new LuxuryManager();
-    private SportManager sportManager = new SportManager();
-    private FamilyManager familyManager = new FamilyManager();
-    private CarDAO carDAO = new CarDAO();
+    private         Scanner         scanner         = new Scanner(System.in);
+    private         LuxuryManager   luxuryManager   = new LuxuryManager();
+    private         SportManager    sportManager    = new SportManager();
+    private         FamilyManager   familyManager   = new FamilyManager();
+    private         CarDAO          carDAO          = new CarDAO();
 
     public CarManager(){}
 
-    public void updateCar(ArrayList<Car> carList){
-        Car updateCar = findCar(carList);
-        if(updateCar instanceof LuxuryCar){
-            luxuryManager.updateLuxuryCar(updateCar);
-        }
-        else if(updateCar instanceof FamilyCar){
-            familyManager.updateFamilyCar(updateCar);
-        }
-        else if(updateCar instanceof SportCar){
-            sportManager.updateSportCar(updateCar);
+    public void updateCar(Map<String, Car> carMap){
+        Car updateCar = findCar(carMap);
+        switch(updateCar.getClass().getSimpleName()){
+            case "FamilyCar"    -> familyManager.updateFamilyCar(updateCar);
+            case "LuxuryCar"    -> luxuryManager.updateLuxuryCar(updateCar);
+            case "SportCar"     -> sportManager.updateSportCar(updateCar);
+            default -> System.out.println("Car class could not be found.");
         }
     }
 
-    public void printCars(ArrayList<Car> carList){
-        carList.forEach(System.out::print);
+    public void printCars(Map<String, Car> carMap){
+        carMap.values().forEach(System.out::print);
     }
 
-    public void printAvailableCars(ArrayList<Car> carList){
-        carList.stream()
+    public void printAvailableCars(Map<String, Car> carMap){
+        carMap.values().stream()
                 .filter(car -> car.getCarStatus().equals("AVAILABLE"))
                 .forEach(System.out::print);
     }
 
-    public void printRentedCars(ArrayList<Car> carList){
-        carList.stream()
+    public void printRentedCars(List<Rental> rentals) {
+        for(Rental rental : rentals){
+            System.out.println(rental.getCar() + " " + rental.getCustomer());
+        }
+    }
+    /*public void printRentedCars(Map<String, Car> carMap, Map<String, Customer> customerMap){
+        carMap.values().stream()
                 .filter(car -> car.getCarStatus().equals("RENTED"))
                 .forEach(System.out::print);
+
+    }*/
+
+    public void deleteCar(Map<String, Car> carMap){
+        Car deleteCar = findCar(carMap);
+        if (deleteCar != null) {
+            carDAO.deleteCar(deleteCar);
+            carMap.remove(deleteCar.getRegNo());
+        }
     }
 
-    public void deleteCar(ArrayList<Car> carList){
-        Car deleteCar = findCar(carList);
-        carDAO.deleteCar(deleteCar);
-        carList.remove(deleteCar);
-    }
-
-    public Car findCar(ArrayList<Car> carList){
+    public Car findCar(Map<String, Car> carMap){
         System.out.println("Type the registration number of the car: ");
         String regNo = scanner.nextLine();
-        for(Car car : carList){
-            if(car.getRegNo().equalsIgnoreCase(regNo)){
-                return car;
-            }
+        Car car = carMap.get(regNo);
+        if (car == null) {
+            System.out.println("The car was not found in the list.");
         }
-        System.out.println("The car was not found in the list.");
-        return null;
+        return car;
     }
 
-    public void createCar(ArrayList<Car> carList){
+    public void createCar(Map<String, Car> carMap){
         System.out.println("Which type of car would you like to create?\n1. Sport Car\n2. Luxury Car\n3. Family Car");
         int choice = Integer.parseInt(scanner.nextLine());
+        Car newCar = null;
+        CarCreationHelper.startCreation();
         switch(choice){
-            case 1:
-                CarCreationHelper.startCreation();
-                sportManager.createSportCar();
-                carList.add(sportManager.createSportCar());
-                break;
-            case 2:
-                CarCreationHelper.startCreation();
-                luxuryManager.createLuxuryCar();
-                carList.add(luxuryManager.createLuxuryCar());
-                break;
-            case 3:
-                CarCreationHelper.startCreation();
-                familyManager.createFamilyCar();
-                carList.add(familyManager.createFamilyCar());
-                break;
-            default:
-                System.out.println("Invalid choice");
+            case 1 -> newCar = sportManager.createSportCar();
+            case 2 -> newCar = luxuryManager.createLuxuryCar();
+            case 3 -> newCar = familyManager.createFamilyCar();
+            default -> System.out.println("Invalid choice");
         }
-        System.out.println("Car added successfully!");
+        if (newCar != null) {
+            carMap.put(newCar.getRegNo(), newCar);
+            System.out.println("Car added successfully!");
+        }
     }
 
-
-    public void getCarsFromSQL(ArrayList<Car> carList){
-        carDAO.getFamilyCars(carList);
-        carDAO.getSportCars(carList);
-        carDAO.getLuxuryCars(carList);
+    public void getCarsFromSQL(Map<String,Car> carMap){
+        carDAO.getFamilyCars(carMap);
+        carDAO.getSportCars(carMap);
+        carDAO.getLuxuryCars(carMap);
     }
 }

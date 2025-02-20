@@ -3,39 +3,41 @@ package org.example.manager;
 
 import org.example.customer.Address;
 import org.example.customer.Customer;
-import org.example.dao.CustomerDAO;
+import org.example.db.CustomerDAO;
+import org.example.util.AddressCreationHelper;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CustomerManager {
 
     private Scanner scanner = new Scanner(System.in);
 
-    private AddressManager addressManager = new AddressManager();
+    private AddressCreationHelper addressManager = new AddressCreationHelper();
     private CustomerDAO customerDAO = new CustomerDAO();
 
 
-    public void getCustomersFromSQL(ArrayList<Customer> customerList){
-        customerDAO.getCustomers(customerList);
+    public void getCustomersFromSQL(Map<String,Customer> customerMap){
+        customerDAO.loadCustomers(customerMap);
     }
 
-    public void printCustomer(ArrayList<Customer> customerList){
-        customerList.forEach(System.out::print);
+    public void printCustomer(Map<String,Customer> customerMap){
+        customerMap.values().forEach(System.out::print);
     }
 
-    public void deleteCustomer(ArrayList<Customer> customerList){
-        Customer deleteCustomer = findCustomer(customerList);
+    public void deleteCustomer(Map<String,Customer> customerMap){
+        Customer deleteCustomer = findCustomer(customerMap);
         customerDAO.deleteCustomer(deleteCustomer);
-        customerList.remove(deleteCustomer);
+        customerMap.remove(deleteCustomer.getLicenseNo());
     }
 
-    public Customer findCustomer(ArrayList<Customer> customerList){
+    public Customer findCustomer(Map<String,Customer> customerMap){
         System.out.println("Type the name of the customer: ");
         String name = scanner.nextLine();
-        for(Customer customer : customerList){
+        for(Customer customer : customerMap.values()){
             if(customer.getName().contains(name)){
                 return customer;
             }
@@ -44,7 +46,7 @@ public class CustomerManager {
         return null;
     }
 
-    public Customer createCustomer(ArrayList<Customer> customerList){
+    public Customer createCustomer(Map<String,Customer> customerMap){
         System.out.println("Customer Name: ");
         String name = scanner.nextLine();
         System.out.println("Customer Address: ");
@@ -60,14 +62,14 @@ public class CustomerManager {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate driverSince = LocalDate.parse(dateAsString, formatter);
         Customer customer = new Customer(name, address, phoneNo, email, licenseNo, driverSince);
-        customerList.add(customer);
+        customerMap.put(customer.getLicenseNo(),customer);
         System.out.println("New Customer added successfully!");
         return customer;
     }
 
-    public void updateCustomer(ArrayList<Customer> customerList){
-        AddressManager addressManager = new AddressManager();
-        Customer updateCustomer = findCustomer(customerList);
+    public void updateCustomer(Map<String,Customer> customerMap){
+        AddressCreationHelper addressManager = new AddressCreationHelper();
+        Customer updateCustomer = findCustomer(customerMap);
 
         System.out.println("Choose what you would like to update: " +
                 "\n1. Name" +

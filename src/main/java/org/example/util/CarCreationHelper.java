@@ -1,4 +1,4 @@
-package org.example.manager;
+package org.example.util;
 import org.example.car.FuelType;
 
 import java.time.LocalDate;

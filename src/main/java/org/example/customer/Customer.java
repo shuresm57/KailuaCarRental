@@ -76,23 +76,22 @@ public class Customer {
     @Override
     public String toString() {
         return String.format("""
-    ============================================
-                   CUSTOMER DETAILS
-    ============================================
-    Name               : %s
-    Phone Number       : %s
-    Email              : %s
-    License No.        : %s
-    Driver Since       : %s
-    ============================================
-                   ADDRESS DETAILS
-    ============================================
-    Address           : %s
-    Zip Code          : %s
-    City             : %s
-    ============================================
-    """,
-                name,
+            ============================================
+                      %s
+            ============================================
+            Phone Number       : %s
+            Email              : %s
+            License No.        : %s
+            Driver Since       : %s
+            ============================================
+                      ADDRESS DETAILS
+            ============================================
+            Address            : %s
+            Zip Code           : %s
+            City               : %s
+            ============================================
+            """,
+                name.toUpperCase(), // Name as the header
                 phoneNo,
                 email,
                 licenseNo,

@@ -1,16 +1,16 @@
-package org.example.dao;
+package org.example.db;
 
 import org.example.car.*;
-import org.example.sql.SQLDriver;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 
 /* En DAO (Data Access Object) som tager sig af alle
-* database handlinger af objektet Car.
-* Når den henter data fra databasen, generer den objekter
-* af Car og gør brug af polyformi til at indsætte biler i
-* en liste af Car*/
+ * SQL queries af objektet Car.
+ * Når den henter data fra databasen, generer den objekter
+ * af Car og gør brug af polyformi til at indsætte biler i
+ * en liste af Car*/
 
 public class CarDAO {
 
@@ -18,9 +18,11 @@ public class CarDAO {
 
     public CarDAO(){}
 
-    public void getFamilyCars(ArrayList<Car> carList){
+    public void getFamilyCars(Map<String, Car> carMap){
         try{
-            String query = "SELECT * FROM car WHERE car_type = 'FAMILY'";
+            String query = """
+                            SELECT * FROM car WHERE car_type = 'FAMILY'
+                            """;
             Statement st = connection.prepareStatement(query);
             ResultSet rs = st.executeQuery(query);
 
@@ -41,16 +43,18 @@ public class CarDAO {
                         fuelType,
                         carStatus
                 );
-                carList.add(familyCar);
+                carMap.put(familyCar.getRegNo(), familyCar);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void getSportCars(ArrayList<Car> carList){
+    public void getSportCars(Map<String, Car> carMap){
         try{
-            String query = "SELECT * FROM car WHERE car_type = 'SPORT'";
+            String query = """
+                            SELECT * FROM car WHERE car_type = 'SPORT'
+                            """;
             Statement st = connection.prepareStatement(query);
             ResultSet rs = st.executeQuery(query);
 
@@ -68,18 +72,19 @@ public class CarDAO {
                         LocalDate.of(rs.getInt("car_reg_year"), rs.getInt("car_reg_month"), 1),
                         fuelType,
                         carStatus
-
                 );
-                carList.add(sportCar);
+                carMap.put(sportCar.getRegNo(), sportCar);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void getLuxuryCars(ArrayList<Car> carList){
+    public void getLuxuryCars(Map<String, Car> carMap){
         try{
-            String query = "SELECT * FROM car WHERE car_type = 'LUXURY'";
+            String query = """
+                            SELECT * FROM car WHERE car_type = 'LUXURY'
+                            """;
             Statement st = connection.prepareStatement(query);
             ResultSet rs = st.executeQuery(query);
 
@@ -99,44 +104,37 @@ public class CarDAO {
                         fuelType,
                         carStatus
                 );
-                carList.add(luxuryCar);
+                carMap.put(luxuryCar.getRegNo(), luxuryCar);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void saveCars(ArrayList<Car> carList){
-        try {
-            String[] columns = {
-                    "car_brand", "car_model", "car_plate", "car_fuel", "car_reg_year", "car_reg_month",
-                    "car_odometer", "car_type", "car_status", "engine_size", "horsepower", "seats",
-                    "automatic_gear", "air_condition", "cruise_control", "leather_seats"
-            };
+    public void saveCars(Map<String, Car> carMap){
+        String saveCar = """
+                            INSERT INTO car (car_brand, car_model, car_plate, car_fuel, car_reg_year, car_reg_month,
+                            car_odometer, car_type, car_status, engine_size, horsepower, seats,
+                            automatic_gear, air_condition, cruise_control, leather_seats) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ON DUPLICATE KEY UPDATE 
+                            car_brand = VALUES(car_brand), car_model = VALUES(car_model), car_plate = VALUES(car_plate), 
+                            car_fuel = VALUES(car_fuel), car_reg_year = VALUES(car_reg_year), car_reg_month = VALUES(car_reg_month),
+                            car_odometer = VALUES(car_odometer), car_type = VALUES(car_type), car_status = VALUES(car_status),
+                            engine_size = VALUES(engine_size), horsepower = VALUES(horsepower), seats = VALUES(seats),
+                            automatic_gear = VALUES(automatic_gear), air_condition = VALUES(air_condition), 
+                            cruise_control = VALUES(cruise_control), leather_seats = VALUES(leather_seats)
+                        """;
 
-            String columnNames = String.join(", ", columns);
-            String valuePlaceholders = String.join(", ", Collections.nCopies(columns.length, "?"));
-            String updateClause = String.join(", ", Arrays.stream(columns)
-                    .map(col -> col + " = VALUES(" + col + ")")
-                    .toArray(String[]::new));
-
-            String save = String.format(
-                    "INSERT INTO car (%s) VALUES (%s) ON DUPLICATE KEY UPDATE %s",
-                    columnNames, valuePlaceholders, updateClause
-            );
-
-            PreparedStatement ps = connection.prepareStatement(save);
-
-            for (Car car : carList) {
-
+        try (PreparedStatement ps = connection.prepareStatement(saveCar)) {
+            for (Car car : carMap.values()) {
                 String type = "";
-                if(car instanceof SportCar) {
+
+                if (car instanceof SportCar) {
                     type = "SPORT";
-                }
-                else if (car instanceof FamilyCar){
+                } else if (car instanceof FamilyCar) {
                     type = "FAMILY";
-                }
-                else if (car instanceof LuxuryCar){
+                } else if (car instanceof LuxuryCar) {
                     type = "LUXURY";
                 }
 
@@ -159,10 +157,10 @@ public class CarDAO {
 
                 ps.addBatch();
             }
+
             ps.executeBatch();
-            ps.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error saving cars: ", e);
         }
     }
 
@@ -178,4 +176,3 @@ public class CarDAO {
         }
     }
 }
-
