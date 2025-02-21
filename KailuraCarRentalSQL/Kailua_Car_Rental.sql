@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS car (
     cruise_control BOOLEAN,                       
     leather_seats BOOLEAN,                       
     PRIMARY KEY (car_id)                          
-);
+	);
 
 	CREATE TABLE IF NOT EXISTS city
 	(
@@ -54,15 +54,16 @@ CREATE TABLE IF NOT EXISTS car (
 	rental_status ENUM('ACTIVE','COMPLETED') DEFAULT 'ACTIVE',
 	FOREIGN KEY(customer_id) REFERENCES customer(customer_id),
 	FOREIGN KEY(car_id) REFERENCES car(car_id),
-	PRIMARY KEY (rental_id)
+	PRIMARY KEY (rental_id),
+	UNIQUE (customer_id, car_id)
 	);
 
-INSERT INTO city (city_name, zip_code) VALUES 
-('Copenhagen', '1000'),
-('Aarhus', '8000'),
-('Odense', '5000'),
-('Aalborg', '9000'),
-('Esbjerg', '6700');
+	INSERT INTO city (city_name, zip_code) VALUES 
+	('Copenhagen', '1000'),
+	('Aarhus', '8000'),
+	('Odense', '5000'),
+	('Aalborg', '9000'),
+	('Esbjerg', '6700');
 
 	
 INSERT INTO customer (name, phone_no, email, license_no, address, zip_code, driver_since) VALUES
@@ -79,7 +80,8 @@ VALUES
 ('BMW', 'X5', 'XYZ789', 'DIESEL', 2017, 8, 60000, 'LUXURY', 'AVAILABLE', 3000, 350, 5, TRUE, TRUE, TRUE, TRUE),
 ('Toyota', 'Camry', 'DEF456', 'GASOLINE', 2016, 10, 70000, 'FAMILY', 'AVAILABLE', 1800, 250, 5, TRUE, TRUE, TRUE, FALSE),
 ('Honda', 'Civic', 'JKL321', 'GASOLINE', 2020, 3, 15000, 'SPORT', 'AVAILABLE', 1500, 220, 4, TRUE, TRUE, FALSE, FALSE),
-('Audi', 'A4', 'GHI654', 'ELECTRIC', 2021, 6, 10000, 'SPORT', 'AVAILABLE', 0, 200, 4, TRUE, TRUE, TRUE, FALSE);
+('Audi', 'A4', 'GHI654', 'ELECTRIC', 2021, 6, 10000, 'SPORT', 'AVAILABLE', 0, 200, 4, TRUE, TRUE, TRUE, FALSE),
+('Audi', 'A4', 'GHI789', 'ELECTRIC', 2021, 6, 10000, 'SPORT', 'AVAILABLE', 0, 200, 4, TRUE, TRUE, TRUE, FALSE);
 
 
 INSERT INTO rental (customer_id, car_id, start_date, end_date, max_km, km_driven, rental_status) VALUES
@@ -88,4 +90,6 @@ INSERT INTO rental (customer_id, car_id, start_date, end_date, max_km, km_driven
 (3, 3, '2025-02-05', '2025-02-12', 600, 500, 'ACTIVE'),
 (4, 4, '2025-02-10', '2025-02-18', 450, 400, 'ACTIVE'),
 (5, 5, '2025-02-12', '2025-02-20', 550, 520, 'ACTIVE');
+
+
 
