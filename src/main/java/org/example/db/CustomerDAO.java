@@ -9,7 +9,7 @@ import java.util.*;
 
 public class CustomerDAO {
 
-    private Connection connection = SQLDriver.connect();
+    private Connection connection = SQLDriver.connection();
 
     public void loadCustomers(Map<String,Customer> customerMap){
         try{
@@ -80,7 +80,7 @@ public class CustomerDAO {
                     psCustomer.setString(2, customer.getPhoneNo());
                     psCustomer.setString(3, customer.getEmail());
                     psCustomer.setString(4, customer.getLicenseNo());
-                    psCustomer.setString(5, customer.getAddress().getAddress());
+                    psCustomer.setString(5, customer.getAddress().getStreetName());
                     psCustomer.setString(6, customer.getAddress().getZip());
                     psCustomer.setDate(7, java.sql.Date.valueOf(customer.getDriverSince()));
                     psCustomer.addBatch();

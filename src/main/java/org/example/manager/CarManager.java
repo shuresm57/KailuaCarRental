@@ -44,15 +44,9 @@ public class CarManager {
 
     public void printRentedCars(List<Rental> rentals) {
         for(Rental rental : rentals){
-            System.out.println(rental.getCar() + " " + rental.getCustomer());
+            System.out.println(rental.getCar() + " \nRented by: \n" + rental.getCustomer());
         }
     }
-    /*public void printRentedCars(Map<String, Car> carMap, Map<String, Customer> customerMap){
-        carMap.values().stream()
-                .filter(car -> car.getCarStatus().equals("RENTED"))
-                .forEach(System.out::print);
-
-    }*/
 
     public void deleteCar(Map<String, Car> carMap){
         Car deleteCar = findCar(carMap);
@@ -89,9 +83,14 @@ public class CarManager {
         }
     }
 
-    public void getCarsFromSQL(Map<String,Car> carMap){
+    public void loadCarsFromSQL(Map<String,Car> carMap){
         carDAO.loadFamilyCars(carMap);
         carDAO.loadSportCars(carMap);
         carDAO.loadLuxuryCars(carMap);
     }
+
+    public void saveCars(Map<String, Car> carMap){
+        carDAO.saveCars(carMap);
+    }
+
 }

@@ -1,22 +1,21 @@
 package org.example.customer;
 
-import java.util.*;
 
 public class Address {
 
-    private       String      address;
+    private       String streetName;
     private       String      zip;
     private       String      city;
 
 
     public Address(String address, String zip, String city){
-        this.address = address;
+        this.streetName = address;
         this.zip = zip;
         this.city = city;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreetName() {
+        return streetName;
     }
 
 

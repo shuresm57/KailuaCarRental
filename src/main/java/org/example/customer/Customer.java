@@ -1,7 +1,6 @@
 package org.example.customer;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 
 public class Customer {
@@ -96,7 +95,7 @@ public class Customer {
                 email,
                 licenseNo,
                 driverSince,
-                address.getAddress(),
+                address.getStreetName(),
                 address.getZip(),
                 address.getCity());
     }

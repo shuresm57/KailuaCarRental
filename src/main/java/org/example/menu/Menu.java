@@ -1,7 +1,6 @@
 package org.example.menu;
 
 import org.example.car.Car;
-import org.example.db.CarDAO;
 import org.example.db.CustomerDAO;
 import org.example.db.RentalDAO;
 import org.example.customer.Customer;
@@ -16,41 +15,37 @@ import java.util.*;
 
 public class Menu {
 
-    private final         Map<String,Car>             carMap              = new HashMap<>();
-    private final         Map<String,Customer>        customerMap         = new HashMap<>();
-    private final         List<Rental>                rentalList          = new ArrayList<>();
+    private static final         Map<String,Car>             carMap              = new HashMap<>();
+    private static final         Map<String,Customer>        customerMap         = new HashMap<>();
+    private static final         List<Rental>                rentalList          = new ArrayList<>();
 
-    private final         Scanner                     scanner             = new Scanner(System.in);
+    private static final         Scanner                     scanner             = new Scanner(System.in);
 
-    private final         CarDAO                      carDAO              = new CarDAO();
-    private final         CustomerDAO                 customerDAO         = new CustomerDAO();
-    private final         RentalDAO                   rentalDAO           = new RentalDAO();
-
-    private final         CarManager                  carManager          = new CarManager();
-    private final         CustomerManager             customerManager     = new CustomerManager();
-    private final         RentalManager               rentalManager       = new RentalManager();
+    private static final         CarManager                  carManager          = new CarManager();
+    private static final         CustomerManager             customerManager     = new CustomerManager();
+    private static final         RentalManager               rentalManager       = new RentalManager();
 
     //Hovedmenuen og alle submenuer er i et infinite loop, indtil at denne boolean er sat til = false; (Når programmet skal lukkes)
-    private               boolean                     running             = true;
+    private static boolean                                  running             = true;
 
     //metode der kører programmet, først loader den al nødvendig data fra SQL, derefter kører metoden der indeholder menuen
-    public void runProgram(){
+    public static void runProgram(){
         loadFromSQL();
         mainMenu();
     }
 
-    public void loadFromSQL(){
-        carManager.getCarsFromSQL(carMap);
-        customerManager.getCustomersFromSQL(customerMap);
-        rentalManager.getRentalsFromSQL(rentalList, customerMap, carMap);
+    public static void loadFromSQL(){
+        carManager.loadCarsFromSQL(carMap);
+        customerManager.loadCustomersFromSQL(customerMap);
+        rentalManager.loadRentalsFromSQL(rentalList, customerMap, carMap);
     }
 
-    public void closeProgram(){
+    public static void closeProgram(){
         running = false;
         try{
-            customerDAO.saveCustomers(customerMap);
-            carDAO.saveCars(carMap);
-            rentalDAO.saveRentals(rentalList);
+            customerManager.saveCustomers(customerMap);
+            carManager.saveCars(carMap);
+            rentalManager.saveRentals(rentalList);
         }
         finally{
                 SQLDriver.closeConnection();
@@ -58,7 +53,7 @@ public class Menu {
     }
 
     //Hjælpemetode der hjælper med alle switch cases. Returnerer den int, som er valget på menuen
-    public int getIntChoice(int max) {
+    public static int getIntChoice(int max) {
         int min = 0;
         String prompt = """
                                Select an option: 
@@ -79,7 +74,7 @@ public class Menu {
     }
 
 
-    public void mainMenu() {
+    public static void mainMenu() {
         while(running){
 
             System.out.println(asciiArt());
@@ -101,7 +96,7 @@ public class Menu {
         }
     }
 
-    public void carMenu(){
+    public static void carMenu(){
         while(running) {
             System.out.println("""
                                                 Car Menu
@@ -130,7 +125,7 @@ public class Menu {
         }
     }
 
-    public void rentalMenu(){
+    public static void rentalMenu(){
         while(running){
             System.out.println("""
                                                 Rental Menu
@@ -152,7 +147,7 @@ public class Menu {
         }
     }
 
-    public void customerMenu(){
+    public static void customerMenu(){
         while(running){
             System.out.println("""
                                                 Customer Menu
@@ -174,7 +169,7 @@ public class Menu {
         }
     }
 
-    public String asciiArt(){
+    public static String asciiArt(){
         String ascii =
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
 "~         _  __     _ _                        ~\n" +

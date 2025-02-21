@@ -20,7 +20,7 @@ public class SQLDriver {
     private SQLDriver(){}
 
     //Singleton (Lazy Initialization)
-    public static Connection connect(){
+    public static Connection connection(){
         if(connection == null){
             try{
                 connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);

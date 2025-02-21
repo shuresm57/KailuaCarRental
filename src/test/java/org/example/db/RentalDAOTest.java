@@ -60,7 +60,7 @@ public class RentalDAOTest {
             rentalDAO = new RentalDAO();
             carDAO = new CarDAO();
             customerDAO = new CustomerDAO();
-            connection = SQLDriver.connect();
+            connection = SQLDriver.connection();
             }
 
 

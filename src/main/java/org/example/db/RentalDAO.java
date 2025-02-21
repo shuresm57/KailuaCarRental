@@ -13,7 +13,7 @@ import static org.example.car.CarStatus.RENTED;
 
 public class RentalDAO {
 
-    private Connection connection = SQLDriver.connect();
+    private Connection connection = SQLDriver.connection();
 
 
 

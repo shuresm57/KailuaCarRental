@@ -19,8 +19,12 @@ public class CustomerManager {
     private CustomerDAO customerDAO = new CustomerDAO();
 
 
-    public void getCustomersFromSQL(Map<String,Customer> customerMap){
+    public void loadCustomersFromSQL(Map<String,Customer> customerMap){
         customerDAO.loadCustomers(customerMap);
+    }
+
+    public void saveCustomers(Map<String,Customer> customerMap){
+        customerDAO.saveCustomers(customerMap);
     }
 
     public void printCustomer(Map<String,Customer> customerMap){
@@ -69,45 +73,50 @@ public class CustomerManager {
     public void updateCustomer(Map<String,Customer> customerMap){
         AddressHelper addressManager = new AddressHelper();
         Customer updateCustomer = findCustomer(customerMap);
+        if(updateCustomer != null){
+            System.out.println("Choose what you would like to update: " +
+                               "\n1. Name" +
+                               "\n2. Phone Number" +
+                               "\n3. Email" +
+                               "\n4. License Number" +
+                               "\n5. Address" +
+                               "\n6. License Registration Date");
 
-        System.out.println("Choose what you would like to update: " +
-                "\n1. Name" +
-                "\n2. Phone Number" +
-                "\n3. Email" +
-                "\n4. License Number" +
-                "\n5. Address" +
-                "\n6. License Registration Date");
 
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter new name: ");
+                    updateCustomer.setName(scanner.nextLine());
+                    break;
+                case 2:
+                    System.out.print("Enter new number: ");
+                    updateCustomer.setPhoneNo(scanner.nextLine());
+                    break;
+                case 3:
+                    System.out.print("Enter new email: ");
+                    updateCustomer.setEmail(scanner.nextLine());
+                    break;
+                case 4:
+                    System.out.print("Enter new license number: ");
+                    updateCustomer.setLicenseNo(scanner.nextLine());
+                    break;
+                case 5:
+                    Address newAddress = addressManager.createAddress();
+                    updateCustomer.setAddress(newAddress);
+                    break;
+                case 6:
+                    System.out.print("Enter new date of registration: ");
+                    updateCustomer.setDriverSince(LocalDate.parse(scanner.nextLine()));
+                    break;
+                default:
+                    System.out.println("Invalid choice, please select a valid option.");
+                    break;
+            }
 
-        int choice = Integer.parseInt(scanner.nextLine());
-        switch (choice) {
-            case 1:
-                System.out.print("Enter new name: ");
-                updateCustomer.setName(scanner.nextLine());
-                break;
-            case 2:
-                System.out.print("Enter new number: ");
-                updateCustomer.setPhoneNo(scanner.nextLine());
-                break;
-            case 3:
-                System.out.print("Enter new email: ");
-                updateCustomer.setEmail(scanner.nextLine());
-                break;
-            case 4:
-                System.out.print("Enter new license number: ");
-                updateCustomer.setLicenseNo(scanner.nextLine());
-                break;
-            case 5:
-                Address newAddress = addressManager.createAddress();
-                updateCustomer.setAddress(newAddress);
-                break;
-            case 6:
-                System.out.print("Enter new date of registration: ");
-                updateCustomer.setDriverSince(LocalDate.parse(scanner.nextLine()));
-                break;
-            default:
-                System.out.println("Invalid choice, please select a valid option.");
-                break;
+        }
+        else{
+            System.out.println("Customer could not be updated.");
         }
     }
 }

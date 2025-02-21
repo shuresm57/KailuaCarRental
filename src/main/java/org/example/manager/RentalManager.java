@@ -19,8 +19,12 @@ public class RentalManager {
     private CustomerManager customerManager = new CustomerManager();
     private CarManager carManager = new CarManager();
 
-    public void getRentalsFromSQL(List<Rental> rentalList, Map<String,Customer> customerMap,Map<String,Car> carMap){
+    public void loadRentalsFromSQL(List<Rental> rentalList, Map<String,Customer> customerMap, Map<String,Car> carMap){
         rentalDAO.loadRentals(rentalList,customerMap,carMap);
+    }
+
+    public void saveRentals(List<Rental> rentalList){
+        rentalDAO.saveRentals(rentalList);
     }
 
     public void printRentals(List<Rental> rentalList){
@@ -125,6 +129,7 @@ public class RentalManager {
                 case 4:
                     System.out.println("Ending rental and marking as completed.");
                     System.out.print("Enter the kilometers driven: ");
+
                     int kmDriven = Integer.parseInt(scanner.nextLine());
                     rental.getCar().setOdometer(kmDriven + rental.getCar().getOdometer());
                     Rental completedRental = new Rental(rental.getCustomer(), rental.getCar(), rental.getStartDate(), rental.getEndDate(), rental.getMaxKM());

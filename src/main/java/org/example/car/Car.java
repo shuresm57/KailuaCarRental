@@ -4,13 +4,14 @@ import java.time.LocalDate;
 
 //Abstract class, da en bil kun kan være family, luxury eller sport. Derfor skal man ikke kunne instantiere Car klassen
 // Subklasserne arver egenskaber og metoder fra denne klasse.
+
 public abstract class Car {
 
     protected String brand;
     protected String model;
     protected String regNo;
 
-    protected int odoMeter;
+    protected int odometer;
     protected int engineSize;
     protected int seats;
     protected int horsepower;
@@ -27,8 +28,9 @@ public abstract class Car {
     protected CarStatus carStatus;
 
     /*I dette tilfælde, ville det være ideelt at bruge et bibliotek som Lombok, som indeholder annoteringer
-     * som @Getter og @Setter
+     * som @Getter, @Setter og @AllArgsConstructor
      * Til at reducere boilerplate koden og forbedre læsbarheden*/
+
 
     public Car(){}
 
@@ -39,7 +41,7 @@ public abstract class Car {
         this.brand = brand;
         this.model = model;
         this.regNo = regNo;
-        this.odoMeter = odoMeter;
+        this.odometer = odoMeter;
         this.engineSize = engineSize;
         this.seats = seats;
         this.horsepower = horsepower;
@@ -79,11 +81,11 @@ public abstract class Car {
     }
 
     public int getOdometer() {
-        return odoMeter;
+        return odometer;
     }
 
     public void setOdometer(int odoMeter) {
-        this.odoMeter = odoMeter;
+        this.odometer = odoMeter;
     }
 
     public int getEngineSize() {
@@ -184,7 +186,7 @@ public abstract class Car {
                 brand,
                 model,
                 regNo,
-                odoMeter,
+                odometer,
                 engineSize,
                 seats,
                 horsepower,

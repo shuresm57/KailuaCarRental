@@ -14,7 +14,7 @@ import java.util.*;
 
 public class CarDAO {
 
-    private Connection connection = SQLDriver.connect();
+    private Connection connection = SQLDriver.connection();
 
     public CarDAO(){}
 
@@ -115,7 +115,7 @@ public class CarDAO {
         String saveCar = """
                             INSERT INTO car (car_brand, car_model, car_plate, car_fuel, car_reg_year, car_reg_month,
                             car_odometer, car_type, car_status, engine_size, horsepower, seats,
-                            automatic_gear, air_condition, cruise_control, leather_seats) 
+                            automatic_gear, air_condition, cruise_control, leather_seats)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                             ON DUPLICATE KEY UPDATE 
                             car_brand = VALUES(car_brand), car_model = VALUES(car_model), car_plate = VALUES(car_plate), 
