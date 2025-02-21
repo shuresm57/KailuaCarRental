@@ -58,8 +58,11 @@ public class Menu {
     }
 
     //Hjælpemetode der hjælper med alle switch cases. Returnerer den int, som er valget på menuen
-    public int getIntChoice(String prompt,  int max) {
+    public int getIntChoice(int max) {
         int min = 0;
+        String prompt = """
+                               Select an option: 
+                """;
         while (true) {
             try {
                 System.out.print(prompt);
@@ -81,14 +84,14 @@ public class Menu {
 
             System.out.println(asciiArt());
             System.out.println("""
-                                    Main Menu
-                                    1. Car Menu
-                                    2. Rental Menu
-                                    3. Customer Menu
-                                    0. Save and Exit
+                                                Main Menu
+                                                1. Car Menu
+                                                2. Rental Menu
+                                                3. Customer Menu
+                                                0. Save and Exit
                                 """);
 
-            switch (getIntChoice("Select an option: ", 6)) {
+            switch (getIntChoice(6)) {
                 case 1 -> carMenu();
                 case 2 -> rentalMenu();
                 case 3 -> customerMenu();
@@ -101,16 +104,17 @@ public class Menu {
     public void carMenu(){
         while(running) {
             System.out.println("""
-                                     Car Menu
-                                     1. Create Car
-                                     2. See all cars
-                                     3. See all available cars
-                                     4. See all currently rented cars
-                                     5. Update Car
-                                     6. Delete Car
-                                     0. Main Menu
+                                                Car Menu
+                                                1. Create Car
+                                                2. See all cars
+                                                3. See all available cars
+                                                4. See all currently rented cars
+                                                5. Update Car
+                                                6. Delete Car
+                                                0. Main Menu
                                  """);
-            switch (getIntChoice("Select an option: ", 6)) {
+
+            switch (getIntChoice(6)) {
                 case 1 -> carManager.createCar(carMap);
                 case 2 -> carManager.printCars(carMap);
                 case 3 -> carManager.printAvailableCars(carMap);
@@ -129,15 +133,15 @@ public class Menu {
     public void rentalMenu(){
         while(running){
             System.out.println("""
-                                    Rental Menu
-                                    1. Create rental
-                                    2. See All rentals
-                                    3. Update rental
-                                    4. Delete rental
-                                    0. Main Menu
+                                                Rental Menu
+                                                1. Create rental
+                                                2. See All rentals
+                                                3. Update rental
+                                                4. Delete rental
+                                                0. Main Menu
                                 """);
 
-            switch (getIntChoice("Select an option: ", 6)) {
+            switch (getIntChoice(6)) {
                 case 1 -> rentalManager.createRental(rentalList, customerMap, carMap);
                 case 2 -> rentalManager.printRentals(rentalList);
                 case 3 -> rentalManager.updateRental(rentalList);
@@ -159,7 +163,7 @@ public class Menu {
                                                 0. Main Menu
                                 """);
 
-            switch (getIntChoice("Select an option: ",4)) {
+            switch (getIntChoice(4)) {
                 case 1 -> customerManager.createCustomer(customerMap);
                 case 2 -> customerManager.printCustomer(customerMap);
                 case 3 -> customerManager.updateCustomer(customerMap);

@@ -18,7 +18,7 @@ public class CarDAO {
 
     public CarDAO(){}
 
-    public void getFamilyCars(Map<String, Car> carMap){
+    public void loadFamilyCars(Map<String, Car> carMap){
         try{
             String query = """
                             SELECT * FROM car WHERE car_type = 'FAMILY'
@@ -50,7 +50,7 @@ public class CarDAO {
         }
     }
 
-    public void getSportCars(Map<String, Car> carMap){
+    public void loadSportCars(Map<String, Car> carMap){
         try{
             String query = """
                             SELECT * FROM car WHERE car_type = 'SPORT'
@@ -80,7 +80,7 @@ public class CarDAO {
         }
     }
 
-    public void getLuxuryCars(Map<String, Car> carMap){
+    public void loadLuxuryCars(Map<String, Car> carMap){
         try{
             String query = """
                             SELECT * FROM car WHERE car_type = 'LUXURY'

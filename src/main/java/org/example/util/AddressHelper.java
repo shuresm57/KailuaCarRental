@@ -4,11 +4,11 @@ import org.example.customer.Address;
 
 import java.util.Scanner;
 
-public class AddressCreationHelper {
+public class AddressHelper {
 
     private Scanner scanner = new Scanner(System.in);
 
-    public AddressCreationHelper(){}
+    public AddressHelper(){}
 
     public Address createAddress(){
         System.out.println("Street name and number: ");

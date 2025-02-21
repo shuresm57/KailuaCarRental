@@ -1,7 +1,7 @@
 package org.example.manager;
 
 import org.example.car.*;
-import org.example.util.CarCreationHelper;
+import org.example.util.CarHelper;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -18,16 +18,16 @@ public class FamilyManager {
         System.out.println("Does the car have cruise control? true/false");
         boolean cruiseControl = scanner.nextBoolean();
         return new FamilyCar(
-                CarCreationHelper.getBrand(),
-                CarCreationHelper.getModel(),
-                CarCreationHelper.getRegNo(),
-                CarCreationHelper.getOdometer(),
-                CarCreationHelper.getEngineSize(),
+                CarHelper.getBrand(),
+                CarHelper.getModel(),
+                CarHelper.getRegNo(),
+                CarHelper.getOdometer(),
+                CarHelper.getEngineSize(),
                 seats,
-                CarCreationHelper.getHorsepower(),
+                CarHelper.getHorsepower(),
                 cruiseControl,
-                CarCreationHelper.getRegDate(),
-                CarCreationHelper.getFuelType(),
+                CarHelper.getRegDate(),
+                CarHelper.getFuelType(),
                 CarStatus.AVAILABLE
         );
     }

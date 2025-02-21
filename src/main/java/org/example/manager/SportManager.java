@@ -1,7 +1,7 @@
 package org.example.manager;
 
 import org.example.car.*;
-import org.example.util.CarCreationHelper;
+import org.example.util.CarHelper;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -14,14 +14,14 @@ public class SportManager {
 
     public SportCar createSportCar(){
         return new SportCar(
-                CarCreationHelper.getBrand(),
-                CarCreationHelper.getModel(),
-                CarCreationHelper.getRegNo(),
-                CarCreationHelper.getOdometer(),
-                CarCreationHelper.getEngineSize(),
-                CarCreationHelper.getHorsepower(),
-                CarCreationHelper.getRegDate(),
-                CarCreationHelper.getFuelType(),
+                CarHelper.getBrand(),
+                CarHelper.getModel(),
+                CarHelper.getRegNo(),
+                CarHelper.getOdometer(),
+                CarHelper.getEngineSize(),
+                CarHelper.getHorsepower(),
+                CarHelper.getRegDate(),
+                CarHelper.getFuelType(),
                 CarStatus.AVAILABLE
         );
     }

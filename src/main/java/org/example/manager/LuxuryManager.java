@@ -1,7 +1,7 @@
 package org.example.manager;
 
 import org.example.car.*;
-import org.example.util.CarCreationHelper;
+import org.example.util.CarHelper;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -16,15 +16,15 @@ public class LuxuryManager {
         System.out.println("Enter amount of seats: ");
             int seats = Integer.parseInt(scanner.nextLine());
             return new LuxuryCar(
-                    CarCreationHelper.getBrand(),
-                    CarCreationHelper.getModel(),
-                    CarCreationHelper.getRegNo(),
-                    CarCreationHelper.getOdometer(),
-                    CarCreationHelper.getEngineSize(),
-                    CarCreationHelper.getHorsepower(),
+                    CarHelper.getBrand(),
+                    CarHelper.getModel(),
+                    CarHelper.getRegNo(),
+                    CarHelper.getOdometer(),
+                    CarHelper.getEngineSize(),
+                    CarHelper.getHorsepower(),
                     seats,
-                    CarCreationHelper.getRegDate(),
-                    CarCreationHelper.getFuelType(),
+                    CarHelper.getRegDate(),
+                    CarHelper.getFuelType(),
                     CarStatus.AVAILABLE
             );
     }

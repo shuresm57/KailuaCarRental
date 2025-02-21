@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,14 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class CarDAOTest {
 
     private FuelType fuelType;
-    private ArrayList<Car> carList;
+    private Map<String,Car> carMap;
     private CarDAO carDAO;
     private Car familyCarTest, sportCarTest, luxuryCarTest;
     private CarStatus carStatus;
 
     @BeforeEach
     void setUp(){
-        carList = new ArrayList<>();
+        carMap = new HashMap<>();
         carDAO = new CarDAO();
         familyCarTest = new FamilyCar(
                 "Tesla",
@@ -60,9 +60,9 @@ public class CarDAOTest {
                 FuelType.DIESEL,
                 CarStatus.RENTED
         );
-        carList.add(familyCarTest);
-        carList.add(sportCarTest);
-        carList.add(luxuryCarTest);
+        carMap.put(familyCarTest.getRegNo(),familyCarTest);
+        carMap.put(sportCarTest.getRegNo(),sportCarTest);
+        carMap.put(luxuryCarTest.getRegNo(),luxuryCarTest);
     }
 
     @Test
@@ -79,15 +79,15 @@ public class CarDAOTest {
     }
     @Test
     public void saveCarTest() {
-        carList.add(familyCarTest);
-        carList.add(sportCarTest);
-        carList.add(luxuryCarTest);
-        assertDoesNotThrow(() -> carDAO.saveCars(carList));
+        carMap.put(familyCarTest.getRegNo(),familyCarTest);
+        carMap.put(sportCarTest.getRegNo(),sportCarTest);
+        carMap.put(luxuryCarTest.getRegNo(),luxuryCarTest);
+        assertDoesNotThrow(() -> carDAO.saveCars(carMap));
     }
 
     @Test
     public void getFamilyCarTest() {
-        assertDoesNotThrow(() -> carDAO.getFamilyCars(carList));
+        assertDoesNotThrow(() -> carDAO.loadFamilyCars(carMap));
     }
 
 

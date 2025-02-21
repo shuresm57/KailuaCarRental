@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 
 public class RentalDAOTest {
 
@@ -30,8 +30,8 @@ public class RentalDAOTest {
     private CustomerDAO customerDAO;
     private RentalDAO rentalDAO;
 
-    private ArrayList<Car> carList;
-    private ArrayList<Customer> customerList;
+    private Map<String,Car> carMap;
+    private Map<String,Customer> customerMap;
     private ArrayList<Rental> rentalList;
     private Connection connection;
 
@@ -54,8 +54,8 @@ public class RentalDAOTest {
                     CarStatus.AVAILABLE
             );
             rentalTest = new Rental(customerTest,familyCarTest,LocalDate.of(2025, 1, 1),LocalDate.of(2025, 1, 20),200);
-            carList  = new ArrayList<>();
-            customerList = new ArrayList<>();
+            carMap = new HashMap<>();
+            customerMap = new HashMap<>();
             rentalList = new ArrayList<>();
             rentalDAO = new RentalDAO();
             carDAO = new CarDAO();
@@ -73,8 +73,12 @@ public class RentalDAOTest {
         }
 
         @Test
+        public void loadRentalTest(){
+            assertDoesNotThrow(() -> rentalDAO.loadRentals(rentalList,customerMap,carMap));
+        }
+
+        @Test
         public void saveRentalTest() {
-            rentalList.add(rentalTest);
             assertDoesNotThrow(() -> rentalDAO.saveRentals(rentalList));
         }
     }

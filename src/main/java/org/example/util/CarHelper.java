@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class CarCreationHelper {
+public class CarHelper {
 
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -18,7 +18,7 @@ public class CarCreationHelper {
     private static LocalDate regDate;
     private static FuelType fuelType;
 
-    public CarCreationHelper() {
+    public CarHelper() {
     }
 
     public static void startCreation(){

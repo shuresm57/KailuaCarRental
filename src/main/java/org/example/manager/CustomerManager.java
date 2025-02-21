@@ -4,11 +4,10 @@ package org.example.manager;
 import org.example.customer.Address;
 import org.example.customer.Customer;
 import org.example.db.CustomerDAO;
-import org.example.util.AddressCreationHelper;
+import org.example.util.AddressHelper;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -16,7 +15,7 @@ public class CustomerManager {
 
     private Scanner scanner = new Scanner(System.in);
 
-    private AddressCreationHelper addressManager = new AddressCreationHelper();
+    private AddressHelper addressManager = new AddressHelper();
     private CustomerDAO customerDAO = new CustomerDAO();
 
 
@@ -68,7 +67,7 @@ public class CustomerManager {
     }
 
     public void updateCustomer(Map<String,Customer> customerMap){
-        AddressCreationHelper addressManager = new AddressCreationHelper();
+        AddressHelper addressManager = new AddressHelper();
         Customer updateCustomer = findCustomer(customerMap);
 
         System.out.println("Choose what you would like to update: " +

@@ -6,20 +6,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CustomerDAOTest {
 
-    private ArrayList<Customer> customerList;
+    private Map<String,Customer> customerMap;
     private CustomerDAO customerDAO;
     private Customer customer;
     private Address address;
 
     @BeforeEach
     public void setUp(){
-        customerList = new ArrayList<>();
+        customerMap = new HashMap<>();
         customerDAO = new CustomerDAO();
         address = new Address("Street 1", "1000", "Copenhagen");
         customer =  new Customer("John Doe", address, "12345678", "john@mail.com", "LIC123", LocalDate.of(2015, 6, 15));
@@ -31,12 +31,12 @@ public class CustomerDAOTest {
     }
     @Test
     public void saveCustomerTest() {
-        customerList.add(customer);
-        assertDoesNotThrow(() -> customerDAO.saveCustomers(customerList));
+        customerMap.put(customer.getLicenseNo(),customer);
+        assertDoesNotThrow(() -> customerDAO.saveCustomers(customerMap));
     }
     @Test
     public void getCustomersTest() {
-        customerList.add(customer);
-        assertDoesNotThrow(() -> customerDAO.loadCustomers(customerList));
+        customerMap.put(customer.getLicenseNo(),customer);
+        assertDoesNotThrow(() -> customerDAO.loadCustomers(customerMap));
     }
 }

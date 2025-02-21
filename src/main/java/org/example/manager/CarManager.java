@@ -1,10 +1,9 @@
 package org.example.manager;
 
 import org.example.car.*;
-import org.example.customer.Customer;
 import org.example.db.CarDAO;
 import org.example.rental.Rental;
-import org.example.util.CarCreationHelper;
+import org.example.util.CarHelper;
 
 import java.util.*;
 
@@ -77,7 +76,7 @@ public class CarManager {
         System.out.println("Which type of car would you like to create?\n1. Sport Car\n2. Luxury Car\n3. Family Car");
         int choice = Integer.parseInt(scanner.nextLine());
         Car newCar = null;
-        CarCreationHelper.startCreation();
+        CarHelper.startCreation();
         switch(choice){
             case 1 -> newCar = sportManager.createSportCar();
             case 2 -> newCar = luxuryManager.createLuxuryCar();
@@ -91,8 +90,8 @@ public class CarManager {
     }
 
     public void getCarsFromSQL(Map<String,Car> carMap){
-        carDAO.getFamilyCars(carMap);
-        carDAO.getSportCars(carMap);
-        carDAO.getLuxuryCars(carMap);
+        carDAO.loadFamilyCars(carMap);
+        carDAO.loadSportCars(carMap);
+        carDAO.loadLuxuryCars(carMap);
     }
 }
