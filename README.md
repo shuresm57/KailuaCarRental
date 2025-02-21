@@ -1,3 +1,5 @@
+©Valdemar Støvring Sørensen, 2025
+
 Formålet med denne opgave var at udvikle et biludlejningsprogram 
 til en biludlejning beliggende i Kailua.
 
